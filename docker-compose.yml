@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: . # Use the current directory as the build context
+      dockerfile: Dockerfile # Ensure the Dockerfile is correctly referenced
+    env_file:
+      - .env # Load environment variables from .env file
+    ports:
+      - '3000:3000' # Map container port 3000 to host port 3000
