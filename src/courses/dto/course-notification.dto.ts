@@ -1,11 +1,13 @@
+import { COURSE_EVENT } from '../lib/courses.lib';
+
 export class CourseNotificationDTO {
   user: {
     name: string;
   };
   course: {
-    name: string;
-  };
-  group: {
     id: string;
+  };
+  event: {
+    name: COURSE_EVENT;
   };
 }

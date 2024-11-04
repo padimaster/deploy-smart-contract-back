@@ -1,19 +1,20 @@
 import { CourseNotificationDTO } from '../dto/course-notification.dto';
+import { COURSE_EVENT } from '../lib/courses.lib';
 
-export class CourseStartedEvent {
+export class CourseEvent {
   user: {
     name: string;
   };
   course: {
-    name: string;
-  };
-  group: {
     id: string;
+  };
+  event: {
+    name: COURSE_EVENT;
   };
 
   constructor(data: CourseNotificationDTO) {
     this.user = data.user;
     this.course = data.course;
-    this.group = data.group;
+    this.event = data.event;
   }
 }
