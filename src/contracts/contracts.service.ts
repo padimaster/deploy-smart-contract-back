@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BigNumber, ethers } from 'ethers';
-import { courseCertificationContract } from './contrats.lib';
+import { abi, bytecode } from './contrats.lib';
 import { ConfigType } from '@nestjs/config';
 import config from 'src/config/config';
 
@@ -23,32 +23,28 @@ export class ContractService {
     courseName: string,
     courseSymbol = 'ZKA',
   ): Promise<ethers.Contract> {
-    const { abi, deployedBytecode } = courseCertificationContract;
-    const factory = new ethers.ContractFactory(
-      abi,
-      deployedBytecode,
-      this.signer,
-    );
+    const factory = new ethers.ContractFactory(abi, bytecode, this.signer);
+
     console.log(
-      this.configuration.contracts.publicAddess,
+      this.configuration.contracts.publicAddress,
       courseName,
       courseSymbol,
     );
 
+    const gasPrice = (await this.provider.getGasPrice()).mul(120).div(100);
+
     const contract = await factory.deploy(
-      this.configuration.contracts.publicAddess,
+      this.configuration.contracts.publicAddress,
       courseName,
       courseSymbol,
       {
-        gasLimit: BigNumber.from('1500000'),
-        nonce: await this.provider.getTransactionCount(this.signer.address),
+        gasLimit: BigNumber.from('6000000'),
+        gasPrice: gasPrice,
       },
     );
 
-    console.log('contract', contract.address);
-    console.log('contract', contract.deployTransaction);
-
     await contract.deployed();
+    await contract.deployTransaction.wait(2);
     return contract;
   }
 }
