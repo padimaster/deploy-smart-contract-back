@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Course } from './courses/entities/course.entity';
 import config from './config/config';
+import { ContractsModule } from './contracts/contracts.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import config from './config/config';
     }),
     EventEmitterModule.forRoot(),
     CoursesModule,
+    ContractsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

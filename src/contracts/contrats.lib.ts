@@ -1,4 +1,4 @@
-export const build = {
+export const courseCertificationContract = {
   _format: 'hh-sol-artifact-1',
   contractName: 'Certificator',
   sourceName: 'contracts/Certification.sol',
