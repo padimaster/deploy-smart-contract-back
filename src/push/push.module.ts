@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { pushSignerProvider, pushUserProvider } from './push.providers';
+import { pushUserProvider } from './push.providers';
 import { PushService } from './push.service';
-import pushConfig from 'src/config/push.config';
+import { ContractsModule } from 'src/contracts/contracts.module';
+import config from 'src/config/config';
 
 @Module({
-  imports: [ConfigModule.forFeature(pushConfig)],
-  providers: [pushSignerProvider, pushUserProvider, PushService],
-  exports: ['PUSH_SIGNER', 'PUSH_USER', PushService],
+  imports: [ConfigModule.forFeature(config), ContractsModule],
+  providers: [pushUserProvider, PushService],
+  exports: ['PUSH_USER', PushService],
 })
 export class PushModule {}

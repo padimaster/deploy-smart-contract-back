@@ -1,23 +1,12 @@
-import { ConfigModule, ConfigType } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { PushAPI } from '@pushprotocol/restapi';
 
 import { CONSTANTS } from '@pushprotocol/restapi';
 import { ethers } from 'ethers';
-import pushConfig from 'src/config/push.config';
-
-export const pushSignerProvider = {
-  imports: [ConfigModule.forFeature(pushConfig)],
-  provide: 'PUSH_SIGNER',
-  useFactory: async (config: ConfigType<typeof pushConfig>) => {
-    const signer = new ethers.Wallet(config.privateKey);
-
-    return signer;
-  },
-  inject: [pushConfig.KEY],
-};
+import config from 'src/config/config';
 
 export const pushUserProvider = {
-  imports: [ConfigModule.forFeature(pushConfig)],
+  imports: [ConfigModule.forFeature(config)],
   provide: 'PUSH_USER',
   useFactory: async (signer: ethers.Wallet) => {
     const user = await PushAPI.initialize(signer, {
@@ -31,5 +20,5 @@ export const pushUserProvider = {
 
     return user;
   },
-  inject: ['PUSH_SIGNER'],
+  inject: ['SIGNER'],
 };

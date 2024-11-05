@@ -1,32 +1,35 @@
-version: "3.8"
+version: '3.9'
+
 services:
-  app:
+  server:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: local_app
+    container_name: server
     restart: always
     ports:
-      - "3000:3000"
+      - "${SERVER_PORT}:${SERVER_PORT}"
     env_file:
-      - .env
+      - path: .env
+        required: true
     depends_on:
-      - db
-  db:
+      - server_db
+
+  server_db:
     image: postgres
-    container_name: local_pgdb
+    container_name: server_database
     restart: always
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:${DB_PORT}"
     env_file:
-      - .env
+      - path: .env
+        required: true
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - local_pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  local_pgdata:
-  
+  pgdata:
